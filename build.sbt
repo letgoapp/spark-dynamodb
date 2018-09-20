@@ -2,7 +2,7 @@ organization := "com.audienceproject"
 
 name := "spark-dynamodb"
 
-version := "0.3.2"
+version := "0.3.2-letgo"
 
 description := "Plug-and-play implementation of an Apache Spark custom data source for AWS DynamoDB."
 
@@ -14,7 +14,7 @@ libraryDependencies += "com.amazonaws" % "aws-java-sdk-dynamodb" % "1.11.325"
 libraryDependencies += "com.amazonaws" % "DynamoDBLocal" % "[1.11,2.0)" % "test"
 
 libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.3.1" % "provided"
-libraryDependencies += "com.google.guava" % "guava" % "14.0.1" % "provided"
+libraryDependencies += "com.google.guava" % "guava" % "21.0" % "provided"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 
@@ -38,11 +38,18 @@ javaOptions in Test ++= Seq("-Djava.library.path=./lib/sqlite4java", "-Daws.dyna
 publishMavenStyle := true
 publishArtifact in Test := false
 pomIncludeRepository := { _ => false }
+/*
 publishTo := {
     val nexus = "https://oss.sonatype.org/"
     if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
     else Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
+*/
+
+publishTo in ThisBuild := Some("spark-release-local" at
+    "http://internal-bipro-artifactory-1634906620.us-east-1.elb.amazonaws.com/artifactory/spark-release-local")
+credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+
 pomExtra := <url>https://github.com/audienceproject/spark-dynamodb</url>
     <licenses>
         <license>

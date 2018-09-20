@@ -72,7 +72,7 @@ private[dynamodb] class ScanPartition(schema: StructType,
                 // Limit throughput to provisioned capacity.
                 prevConsumedCapacity
                     .map(capacity => math.ceil(capacity.getCapacityUnits).toInt)
-                    .foreach(rateLimiter.acquire)
+                    .foreach(x => {rateLimiter.acquire; Unit})
 
                 val page = pageIterator.next()
                 prevConsumedCapacity = Option(page.getLowLevelResult.getScanResult.getConsumedCapacity)
